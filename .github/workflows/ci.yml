@@ -17,16 +17,13 @@ jobs:
         java-version: '17'
         distribution: 'corretto'
         cache: maven
-    # Install Maven
-    - name: Set up Maven
-      uses: actions/setup-maven@v4
 
     # Static Analysis
     - name: Super-linter
       uses: super-linter/super-linter@v7.2.1
       env:
-        # To report GitHub Actions status checks
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        LINTERS: "checkstyle"
 
     # Build and Test the Spring Boot application
     - name: Build and test with Maven
