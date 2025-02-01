@@ -1,0 +1,39 @@
+name: Symptom Checker CI Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    # Set up JDK
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'corretto'
+        cache: maven
+    # Install Maven
+    - name: Set up Maven
+      uses: actions/setup-maven@v4
+
+    # Static Analysis
+    - name: Super-linter
+      uses: super-linter/super-linter@v7.2.1
+      env:
+        # To report GitHub Actions status checks
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Build and Test the Spring Boot application
+    - name: Build and test with Maven
+      run: mvn clean install -DskipTests=false
+
+    # Build Docker image and validate
+    - name: Build Docker image
+      run: |
+          docker build -t symptom-checker .
+          docker run --rm symptom-checker --version
