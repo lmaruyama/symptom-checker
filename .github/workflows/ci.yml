@@ -19,11 +19,10 @@ jobs:
         cache: maven
 
     # Static Analysis
-    - name: Super-linter
-      uses: super-linter/super-linter@v7.2.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        LINTERS: "checkstyle"
+    - name: Run Checkstyle
+      run: mvn checkstyle:check
+    - name: Print diffs
+      run: git --no-pager diff --exit-code
 
     # Build and Test the Spring Boot application
     - name: Build and test with Maven

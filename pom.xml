@@ -103,7 +103,23 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.6.0</version> <!-- Use the latest version -->
+				<configuration>
+					<configLocation>src/main/resources/checkstyle.xml</configLocation> <!-- Explicit path to your checkstyle.xml -->
+					<consoleOutput>true</consoleOutput> <!-- Optionally, to get console output -->
+					<failOnViolation>false</failOnViolation> <!-- To avoid failing the build on violations -->
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>
