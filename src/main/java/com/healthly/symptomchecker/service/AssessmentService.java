@@ -11,7 +11,8 @@ import java.util.Optional;
 public interface AssessmentService {
     Assessment startAssessment(String userId, List<Symptom> symptoms);
 
-    Optional<Symptom> processAnswer(String assessmentId, Symptom questionId, PossibleAnswer response);
+    Optional<Symptom> processAnswer(String assessmentId,
+                                    Symptom questionId, PossibleAnswer response);
 
     Map<String, Double> getResult(String assessmentId);
 }

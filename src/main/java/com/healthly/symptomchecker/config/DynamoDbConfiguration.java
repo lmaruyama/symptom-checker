@@ -37,6 +37,7 @@ public class DynamoDbConfiguration {
 
     @Bean
     public DynamoDbEnhancedClient dynamoDbEnhancedClient(DynamoDbClient dynamoDbClient) {
+
         return DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(dynamoDbClient)
                 .build();
@@ -44,11 +45,14 @@ public class DynamoDbConfiguration {
 
     @Bean
     public DynamoDbTable<User> userTable(DynamoDbEnhancedClient dynamoDbEnhancedClient) {
+
         return dynamoDbEnhancedClient.table("User", TableSchema.fromBean(User.class));
     }
 
     @Bean
-    public DynamoDbTable<Assessment> assessmentTable(DynamoDbEnhancedClient dynamoDbEnhancedClient) {
+    public DynamoDbTable<Assessment> assessmentTable(
+            DynamoDbEnhancedClient dynamoDbEnhancedClient) {
+
         return dynamoDbEnhancedClient.table("Assessment", TableSchema.fromBean(Assessment.class));
     }
 }

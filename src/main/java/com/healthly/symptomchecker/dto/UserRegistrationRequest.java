@@ -22,7 +22,11 @@ public class UserRegistrationRequest {
         Validate.notBlank(request.getPassword(), "Password is required");
         Validate.isTrue(request.getAge() > 0, "Age must be great than 0");
 
-        return new User(request.getEmail().toLowerCase(), request.getPassword(), request.getAge(), request.getGender());
+        return new User(
+                request.getEmail().toLowerCase(),
+                request.getPassword(),
+                request.getAge(),
+                request.getGender());
     }
 
 }

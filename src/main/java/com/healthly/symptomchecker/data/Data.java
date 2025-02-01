@@ -15,9 +15,10 @@ import static java.util.Map.entry;
 
 public class Data {
 
-    private Data() {}
+    private Data() { }
 
-    public static final Set<Symptom> symptoms = Arrays.stream(Symptom.values()).collect(Collectors.toSet());
+    public static final Set<Symptom> symptoms =
+            Arrays.stream(Symptom.values()).collect(Collectors.toSet());
 
     public static final List<Condition> conditions = List.of(
             new Condition(HAY_FEVER, 0.3,

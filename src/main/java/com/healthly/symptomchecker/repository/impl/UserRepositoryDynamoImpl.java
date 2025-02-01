@@ -39,7 +39,8 @@ public class UserRepositoryDynamoImpl implements UserRepository {
 
         log.debug("Searching for user by email: {}", email);
 
-        QueryConditional queryConditional = QueryConditional.keyEqualTo(k -> k.partitionValue(email));
+        QueryConditional queryConditional =
+                QueryConditional.keyEqualTo(k -> k.partitionValue(email));
 
         final Optional<Page<User>> userPages = userTable
                 .index(USER_EMAIL_INDEX)
@@ -55,7 +56,8 @@ public class UserRepositoryDynamoImpl implements UserRepository {
         final Page<User> userPage = userPages.get();
         if (userPage.items().size() > 1) {
             log.warn("Found more than one user with email: {}", email);
-            throw new IllegalStateException("Found more than one user with email: %s".formatted(email));
+            throw new IllegalStateException(
+                    "Found more than one user with email: %s".formatted(email));
         }
 
         return userPage.items().stream().findFirst();

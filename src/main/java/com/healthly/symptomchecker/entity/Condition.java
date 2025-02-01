@@ -5,6 +5,9 @@ import com.healthly.symptomchecker.data.Symptom;
 
 import java.util.Map;
 
-public record Condition(Disease disease, double prevalence, Map<Symptom, Double> symptomProbabilities) {
+public record Condition(
+        Disease disease,
+        double prevalence,
+        Map<Symptom, Double> symptomProbabilities) {
 
 }

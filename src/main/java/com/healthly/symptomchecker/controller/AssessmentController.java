@@ -30,18 +30,23 @@ public class AssessmentController {
 
     @PostMapping("/start")
     @ResponseStatus(HttpStatus.CREATED)
-    AssessmentStartResponse start(@RequestBody AssessmentStartRequest request) {
-        Assessment assessment = assessmentService.startAssessment(request.userId(), request.symptoms());
+    AssessmentStartResponse start(
+            @RequestBody AssessmentStartRequest request) {
+        Assessment assessment =
+                assessmentService.startAssessment(request.userId(), request.symptoms());
         Optional<Symptom> symptom = assessment.getAskedQuestions().stream().findFirst();
         String nextQuestion = symptom.map(Symptom::description).orElse(null);
         return new AssessmentStartResponse(assessment.getAssessmentId(), nextQuestion);
     }
 
     @PostMapping("/{assessment_id}/answer")
-    AssessmentAnswerResponse answer(@PathVariable("assessment_id") String assessmentId, @RequestBody AssessmentAnswerRequest request) {
+    AssessmentAnswerResponse answer(
+            @PathVariable("assessment_id") String assessmentId,
+            @RequestBody AssessmentAnswerRequest request) {
         Symptom askedSymptom = Symptom.getSymptom(request.questionId());
 
-        final Optional<Symptom> symptom = assessmentService.processAnswer(assessmentId, askedSymptom, request.response());
+        final Optional<Symptom> symptom =
+                assessmentService.processAnswer(assessmentId, askedSymptom, request.response());
         String nextQuestion = null;
         if (symptom.isPresent()) {
             nextQuestion = symptom.get().description();

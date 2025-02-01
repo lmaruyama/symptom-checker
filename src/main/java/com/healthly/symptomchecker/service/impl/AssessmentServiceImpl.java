@@ -66,7 +66,9 @@ public class AssessmentServiceImpl implements AssessmentService {
      * @return The possible symptom based on the user's answer
      */
     @Override
-    public Optional<Symptom> processAnswer(String assessmentId, Symptom questionId, PossibleAnswer response) {
+    public Optional<Symptom> processAnswer(
+            String assessmentId, Symptom questionId, PossibleAnswer response) {
+
         Assessment assessment = retrieveAssessment(assessmentId);
 
         // if reaches the maximum number of questions,
@@ -92,7 +94,8 @@ public class AssessmentServiceImpl implements AssessmentService {
     public Map<String, Double> getResult(String assessmentId) {
         Assessment assessment = retrieveAssessment(assessmentId);
         Set<Symptom> confirmedSymptoms = new HashSet<>(assessment.getConfirmedSymptoms());
-        final Map<Disease, Double> computed = computeProbabilities.compute(confirmedSymptoms, getConditions());
+        final Map<Disease, Double> computed =
+                computeProbabilities.compute(confirmedSymptoms, getConditions());
 
         return computed.entrySet()
                 .stream()
@@ -103,12 +106,15 @@ public class AssessmentServiceImpl implements AssessmentService {
     }
 
     private Assessment retrieveAssessment(String assessmentId) {
-        return assessmentRepository.findById(assessmentId).orElseThrow(AssessmentNotFoundException::new);
+        return assessmentRepository
+                .findById(assessmentId)
+                .orElseThrow(AssessmentNotFoundException::new);
     }
 
     private Optional<Symptom> suggestNextQuestion(Assessment assessment) {
         final Set<Symptom> confirmedSymptoms = new HashSet<>(assessment.getConfirmedSymptoms());
-        final Map<Disease, Double> diseases = computeProbabilities.compute(confirmedSymptoms, getConditions());
+        final Map<Disease, Double> diseases =
+                computeProbabilities.compute(confirmedSymptoms, getConditions());
 
         final Optional<Map.Entry<Disease, Double>> mostLikelyCondition
                 = diseases.entrySet().stream().max(Map.Entry.comparingByValue());
@@ -123,7 +129,8 @@ public class AssessmentServiceImpl implements AssessmentService {
                             .findFirst();
 
             if (condition.isPresent()) {
-                final Map<Symptom, Double> symptomDoubleMap = new EnumMap<>(condition.get().symptomProbabilities());
+                final Map<Symptom, Double> symptomDoubleMap =
+                        new EnumMap<>(condition.get().symptomProbabilities());
                 assessment.getConfirmedSymptoms().forEach(symptomDoubleMap.keySet()::remove);
                 assessment.getAskedQuestions().forEach(symptomDoubleMap.keySet()::remove);
 

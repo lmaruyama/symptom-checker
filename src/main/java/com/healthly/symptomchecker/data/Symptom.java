@@ -34,7 +34,9 @@ public enum Symptom {
         return Arrays.stream(Symptom.values())
                 .filter(symptom -> symptom.description.equals(description))
                 .findFirst()
-                .orElseThrow(() -> new InvalidSymptomException("[%s] is not a valid symptom.".formatted(description)));
+                .orElseThrow(() ->
+                        new InvalidSymptomException(
+                                "[%s] is not a valid symptom.".formatted(description)));
     }
 
     public static Set<Symptom> getSymptoms(List<String> description) {
