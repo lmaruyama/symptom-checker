@@ -29,7 +29,21 @@ jobs:
       run: mvn clean install -DskipTests=false
 
     # Build Docker image and validate
-    - name: Build Docker image
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Start Docker Compose services
       run: |
-          docker build -t symptom-checker .
-          docker run --rm symptom-checker --version
+        docker compose up -d
+
+    - name: Wait for services to start
+      run: |
+        sleep 15
+        curl --fail http://localhost:8080/actuator/health || (docker logs symptom-checker && exit 1)
+
+    - name: Show logs on failure
+      if: failure()
+      run: docker logs symptom-checker
+
+    - name: Stop and clean up Docker Compose services
+      run: docker compose down
