@@ -1,0 +1,14 @@
+aws dynamodb create-table \
+    --table-name Assessment \
+    --attribute-definitions \
+        AttributeName=assessment_id,AttributeType=S \
+        AttributeName=user_id,AttributeType=S \
+    --key-schema \
+        AttributeName=assessment_id,KeyType=HASH \
+    --global-secondary-indexes \
+        "IndexName=assessment_user_index, \
+        KeySchema=[{AttributeName=user_id,KeyType=HASH}], \
+        Projection={ProjectionType=ALL}, \
+        ProvisionedThroughput={ReadCapacityUnits=5,WriteCapacityUnits=5}" \
+    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --endpoint-url http://localhost:8000

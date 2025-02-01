@@ -1,0 +1,30 @@
+services:
+  symptom-checker:
+    build: .
+    container_name: symptom-checker
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dynamodb-local
+    environment:
+      AWS_ACCESS_KEY_ID: "dummyAccessKey"
+      AWS_SECRET_ACCESS_KEY: "dummySecretKey"
+      AWS_DYNAMODB_ENDPOINT: "http://dynamodb-local:8000"
+    networks:
+      - symptom-checker-network
+
+  dynamodb-local:
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data"
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+    networks:
+      - symptom-checker-network
+
+networks:
+  symptom-checker-network:
+    driver: bridge
